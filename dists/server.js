@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const app_1 = __importDefault(require("./app"));
 const path_1 = __importDefault(require("path"));
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3333;
 app_1.default.get('/', (req, res) => {
     // res.sendFile(__dirname+'/../public/index.html')
     res.sendFile(path_1.default.join(__dirname, '/../public/index.html'));

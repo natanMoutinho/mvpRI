@@ -7,12 +7,14 @@ services:
     image: node:16-alpine
     working_dir: /usr/src/mvp_repositorio/ 
     # npm run dockerDev
-    command: sh -c "npm install --only=prod && node dists/server.js"
+    command: sh -c "npm install --omit=dev && node dists/server.js"
     volumes:
       - ./dists/:/usr/src/mvp_repositorio/dists/
       - ./package.json:/usr/src/mvp_repositorio/package.json
       - ./public/:/usr/src/mvp_repositorio/public/
       # - ./yarn.lock:/usr/src/toDoList/yarn.lock
       # - ./yarn-error.log:/usr/src/toDoList/yarn-error.log
+    # expose:
+    #   - 2222
     ports:
-      - "3333:3000"
+      - "3000:3333"
