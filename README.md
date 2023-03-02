@@ -21,3 +21,7 @@ Titulo
 Integrantes
 Data da defesa
 Doc - PDF
+
+
+
+link bd: DATABASE_URL="postgresql://aluno:abc123@postgress_container:5432/mydb?schema=public"

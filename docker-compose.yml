@@ -4,14 +4,19 @@ services:
   mvp:
     # build: .
     container_name: mvp_repositorio_institucional
-    image: node:16-alpine
+    image: node:18
     working_dir: /usr/src/mvp_repositorio/ 
     # npm run dockerDev
-    command: sh -c "npm install --omit=dev && yarn dockerDev"
+    # command: sh -c "curl -v https://google.com"
+    # command: sh -c "curl -v https://registry.npmjs.com/"
+    command: sh -c "npm install --omit=dev && node dists/server.js"
+    # tty: true
     volumes:
       - ./dists/:/usr/src/mvp_repositorio/dists/
       - ./package.json:/usr/src/mvp_repositorio/package.json
       - ./public/:/usr/src/mvp_repositorio/public/
+      # - ./prisma/:/usr/src/mvp_repositorio/prisma/
+      # - ./.env/:/usr/src/mvp_repositorio/.env
       # - ./yarn.lock:/usr/src/toDoList/yarn.lock
       # - ./yarn-error.log:/usr/src/toDoList/yarn-error.log
     # expose:
@@ -19,3 +24,16 @@ services:
     # host_port x container_port
     ports:
       - "3000:3333"
+
+
+  # postgress:
+  #   container_name: postgress_container
+  #   image: postgres:11-alpine
+  #   volumes:
+  #     - ./db/:/usr/bd/
+  #   environment:
+  #     - POSTGRES_PASSWORD=abc123
+  #     - POSTGRESS_USER=aluno 
+    
+  #   ports:
+  #     - "5432:5432"

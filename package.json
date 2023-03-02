@@ -8,7 +8,9 @@
     "build": "npx tsc",
     "build_watch": "npx tsc -w",
     "up": "yarn build && docker-compose up -d && ",
-    "down": "docker-compose down"
+    "down": "docker-compose down",
+    "clear": "docker-compose kill && docker-compose rm",
+    "db": "docker-compose up"
   },
   "author": "nataN <natan.nt.iff@gmail.com>",
   "license": "MIT",
