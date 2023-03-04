@@ -23,5 +23,23 @@ Data da defesa
 Doc - PDF
 
 
+# Anotações
+
+
+Será necessário criar 3 serviços principais. Um servio web que será a apicação, o serviço de persistencia dos dados e um servidor de arquivos que ficará disponibel somente para a aplicação web, tal servidor armazenará os documentos PDFs e irá disponibilizar o caminho para a recuperação dos msms.
+
+O esboço da rede será assim
+
+rede ftp-server:
+    Ficará encarregado de ser a ligação do servidor com a aplicação e irá mandar os documentos e tudo mais.
+
+rede bd-server:
+    Ficará encarregada da persistencia dos dados e irá salvar o caminho para download dos PDFs.
+
+No final somente a aplicação web poderá visualizar e interagir com as outras redes e servidores.
+
+
+
+
 
 link bd: DATABASE_URL="postgresql://aluno:abc123@postgress_container:5432/mydb?schema=public"
