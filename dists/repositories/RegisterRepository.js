@@ -6,15 +6,18 @@ class RegisterRepository {
     constructor() {
         this.prismaCli = new client_1.PrismaClient();
     }
-    async createRegister(data) {
-        const newRegister = this.prismaCli.register.create({
+    async createRegister(info) {
+        console.log(info);
+        const newRegister = await this.prismaCli.register.create({
             data: {
-                authors: data.authors,
+                authors: info.authors,
                 // createdAt: data.createdAt,
-                publishedAt: data.publishedAt,
-                document: data.document
+                publishedAt: info.publishedAt,
+                document: info.document
+                // document:  data.document
             }
         });
+        console.log(newRegister);
         return newRegister;
     }
     async listRegister() {

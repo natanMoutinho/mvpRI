@@ -4,21 +4,25 @@ services:
   mvp:
     # build: .
     container_name: mvp_repositorio_institucional
-    image: node:18-alpine
+    image: node:18-alpine 
     working_dir: /usr/src/mvp_repositorio/ 
     # npm run dockerDev
     # command: sh -c "curl -v https://google.com"
     # command: sh -c "curl -v https://registry.npmjs.com/"
-    command: sh -c " npm install -g npm@9.6.0 && yarn prod && npx prisma generate && yarn dockerDev"
+    # command: ["executable", "arg"]
+    command: sh -c " npm install -g npm@9.6.0 && yarn prod && yarn dockerDev"
+    # command: sh -c " npm install -g npm@9.6.0 && yarn prod && yarn migrate && yarn prisma db pull && yarn prisma generate &&  yarn dockerDev"
+    # command: sh -c " npm install -g npm@9.6.0 && yarn prod && yarn prisma db pull && yarn prisma generate &&  yarn dockerDev"
     # command: sh -c "npx prisma studio"
     tty: true
-    
     volumes:
       - ./dists/:/usr/src/mvp_repositorio/dists/
       - ./package.json:/usr/src/mvp_repositorio/package.json
       - ./public/:/usr/src/mvp_repositorio/public/
       - ./prisma/:/usr/src/mvp_repositorio/prisma/
       - ./.env:/usr/src/mvp_repositorio/.env
+      - ./tmp/uploads:/usr/src/mvp_repositorio/tmp/uploads
+      # - ./shared/:
       # - ./yarn.lock:/usr/src/toDoList/yarn.lock
       # - ./yarn-error.log:/usr/src/toDoList/yarn-error.log
     # expose:
@@ -30,22 +34,47 @@ services:
     depends_on:
       - postgress
 
-
   postgress:
     container_name: postgress_container
     image: postgres:11-alpine
     # volumes:
     #   - ./db/:/usr/bd/
     environment:
-      - POSTGRES_PASSWORD=abc123
-      - POSTEGRES_USER=aluno
-      - POSTGRES_DB=repository
+      # POSTGRES_DB: repo
+      # POSTEGRES_USER: aluno/
+      # POSTGRES_PASSWORD: abc123
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PW}
+      - POSTGRES_DB=${POSTGRES_DB} #op
+      # POSTGRES_HOST_AUTH_METHOD: trust
+
+      # POSTGRES_DB: ${POSTGRES_DB: repository}
+      # POSTGRES_USER: ${POSTGRES_USER: aluno}
+      # POSTGRES_PASSWORD: ${POSTGRES_PASSWORD: repository}
     volumes:
-      - ./db-postgres/:/var/lib/postgresql/data
-      - ./db-postgres/
+      - ./db-postgres/:/var/lib/postgresql/data/.
+      - ./db-shared/:/usr/document/.
     ports:
       - "5432:5432"
     tty: true
+  ftpd_server:
+    image: stilliard/pure-ftpd
+    container_name: pure-ftpd
+    ports:
+      - "21:21"
+      - "30000-30009:30000-30009"
+    volumes: # remember to replace /folder_on_disk/ with the path to where you want to store the files on the host machine
+      - "./folder_on_disk/data:/home/${FTP_USER_HOME}/"
+      - "./folder_on_disk/passwd:/etc/pure-ftpd/passwd"
+    environment:
+      - PUBLICHOST=localhost
+      - FTP_USER_NAME= ${FTP_USER_NAME}
+      - FTP_USER_PASS= ${FTP_USER_PASS}
+      - FTP_USER_HOME=/home/${FTP_USER_HOME}
+# also for ssl/tls:
+#      ADDED_FLAGS: "--tls=2"
+    # restart: always
+volumes:
+  db-postgres:
 
-  # volumes:
-  #     - ./db-postgres/
+

@@ -16,19 +16,21 @@ export class RegisterRepository{
     }
 
 
-    async createRegister(data:infoDTO ){
-        const newRegister = this.prismaCli.register.create({
+    async createRegister(info:infoDTO ){
+        console.log(info)
+        const newRegister = await this.prismaCli.register.create({
             data:{
-                authors: data.authors,
+                authors: info.authors,
                 // createdAt: data.createdAt,
-                publishedAt:  data.publishedAt,
-                document:  data.document
+                publishedAt:  info.publishedAt,
+                document: info.document
+                // document:  data.document
 
             }
         })
+        console.log(newRegister)
         return newRegister;
     }
-
     async listRegister(){
         const listRegister =  await this.prismaCli.register.findMany({}); 
         return listRegister;
