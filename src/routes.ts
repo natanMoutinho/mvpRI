@@ -136,6 +136,10 @@ routes.get('/tccForm', (req, res) => {
   res.sendFile(path.join(__dirname, '/../public/form.html'));
 })
 
+routes.get('/indexStyle', (req, res) => {
+  res.sendFile(path.join(__dirname, '/../public/form.html'));
+})
+
 routes.get('/img/mural', (req, res) => {
   res.sendFile(path.join(__dirname, '/../public/img/mural1.jpg'));
 })

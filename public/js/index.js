@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded",async ()=>{
 
 
 async function loadTable() {
-    const table = document.getElementById('tabelaIndex');
+    const table = document.getElementById('tBody');
     console.log(table);
   
     
@@ -14,12 +14,17 @@ async function loadTable() {
     
     console.log(typeof list)
     // const dados = list[0];
+    let cont = 1;
     list.forEach(info => {
         const tr = document.createElement('tr');
         const {title,authors,publishedAt} = info;
         const doc = info['document'];
         console.log(doc)
         const [tdTit,tdAuth,tdDataC,tdDoc] = loadInfo(title,authors,publishedAt,doc);
+        const num = document.createElement('td');
+        num.innerHTML = cont;
+        cont +=1;
+        tr.appendChild(num);
         tr.appendChild(tdTit);
         tr.appendChild(tdAuth);
         tr.appendChild(tdDataC);
