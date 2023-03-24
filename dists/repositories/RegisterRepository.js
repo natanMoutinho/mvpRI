@@ -25,7 +25,8 @@ class RegisterRepository {
         const listRegister = await this.prismaCli.register.findMany({});
         return listRegister;
     }
-    async deleteRegister() {
+    async deleteAllRegister() {
+        await this.prismaCli.register.deleteMany();
     }
 }
 exports.RegisterRepository = RegisterRepository;

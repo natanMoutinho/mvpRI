@@ -42,10 +42,30 @@ export class FileConfig{
         //  `/usr/src/mvp_repositorio/tmp/downloads/${filename}`
         // Baixe o arquivo
         await this.ftpClient.downloadTo(fs.createWriteStream(`/usr/src/mvp_repositorio/tmp/downloads/${filename}`), filename);
-        console.log('teste --------------------------------------------------------------------');
+
+        // const list = await this.ftpClient.list();
+        // console.log(list);
     
     }
 
+    async clear(){
+        console.log(await this.ftpClient.list());
+    }
+
+    async deleteAll(){
+        // console.log('começou')
+        console.log(await this.ftpClient.list());
+        const list = await this.ftpClient.list()
+        console.log(list);
+        const filenames = list.map((file) => {
+            return file.name;
+          });
+        // console.log('ANTES DE TESTAR OUTROS AKI')
+        for (const name of filenames) {
+            await this.ftpClient.remove(name);
+        }
+        // console.log(await this.ftpClient.list());
+    }
 
     async closeConnection() {
         await this.ftpClient.close();

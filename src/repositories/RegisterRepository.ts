@@ -34,7 +34,7 @@ export class RegisterRepository{
         return listRegister;
     }
 
-    async deleteRegister(){
-        
+    async deleteAllRegister(){
+        await this.prismaCli.register.deleteMany();
     }
 }

@@ -29,25 +29,14 @@ routes.post("/upload", upload.single("file"), async (req, res) => {
       await fileUploader.uploadFileToFTP(req.file);
       const newRegister = await repository.createRegister({title, authors, publishedAt, document: req.file.originalname });
       await fileUploader.closeConnection();
-      res.status(200).json(newRegister);
+      res.status(200).redirect('/');
+      // res.redirect('/');
     }
   } catch (err) {
     console.error(err);
     res.status(500).send("Failed to upload file to FTP server.");
   } finally {
     fileUploader.closeConnection();
-  }
-});
-
-routes.get("/download/:filename", async (req, res) => {
-  const fileDownloader = new FileConfig();
-  try {
-
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Failed to donwload file to FTP server.");
-  } finally {
-    fileDownloader.closeConnection();
   }
 });
 
@@ -61,10 +50,11 @@ routes.get("/down/:filename", async (req, res) => {
   const fileDownloader = new FileConfig();
   try {
     await fileDownloader.connectToFTP();
-    console.log('============================================')
+    // console.log('============================================')
     await fileDownloader.downloadFileFromFTP(remoteFileName);
-    console.log('============================================')
+    // console.log('============================================')
     console.log(localFilePath)
+    // await fileDownloader.clear()
     res.sendFile(localFilePath,(err) => {
       if (err) {
         console.error(`Erro ao enviar o arquivo ${remoteFileName} como resposta HTTP:`, err);
@@ -89,58 +79,15 @@ routes.get("/down/:filename", async (req, res) => {
   }
 });
 
-// Defina a rota para download do arquivo
-routes.get("/teste/:filename", async (req, res) => {
-  const ftpClient = new Client(30000);
-  const [host,user,password] = [ 
-    process.env.FTP_HOST,
-    process.env.FTP_USER_NAME,
-    process.env.FTP_USER_PASS
-]
-await ftpClient.access({
-  host,
-  user,
-  password,
-});
-  // Defina o nome do arquivo que deseja baixar
-  const remoteFileName = req.params.filename;;
-  // Defina o caminho local para onde o arquivo será baixado
-  // const localFilePath = path.join(__dirname, './../tmp/downloads/', remoteFileName);
-  const localFilePath = path.join(__dirname,'../../tmp/downloads',remoteFileName);
-
-  try {
-     // Baixe o arquivo
-     console.log(await ftpClient.downloadTo(fs.createWriteStream(localFilePath), remoteFileName));
-    res.sendFile(localFilePath,(err) => {
-      if (err) {
-        console.error(`Erro ao enviar o arquivo ${remoteFileName} como resposta HTTP:`, err);
-        res.status(500).send("Ocorreu um erro ao baixar o arquivo.");
-        return;
-      }
-      // Exclui o arquivo
-      fs.unlink(localFilePath, (err) => {
-        if (err) {
-          console.error(`Erro ao excluir arquivo em -> ${localFilePath}:`, err);
-        } else {
-          console.log(`Arquivo ${localFilePath} excluído com sucesso.`);
-        }
-      });
-    })
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Ocorreu um erro ao baixar o arquivo.");
-  } finally {
-    // Desconecte-se do servidor FTP
-  }
-});
-
 routes.get('/registers', async (req, res) => {
   // const {authors,publishedAt,document} = req.body;
   const repository = new RegisterRepository();
   try {
     const registers = await repository.listRegister();
     // res.status(200).send(register);
+    await repository
     console.log(registers);
+    
     res.status(200).json(registers);
   } catch (e) {
     res.status(400).send(e);
@@ -148,8 +95,40 @@ routes.get('/registers', async (req, res) => {
 
 })
 
-routes.get('/removeAll', async (req, res) => {
+routes.get("/limpar", async (req, res) => {
 
+  const limpar = new FileConfig();
+  try {
+    console.log(await limpar.clear());
+  } catch (err) {
+    console.error(err);
+    res.status(400).send("Não deu pra limpar");
+  } finally {
+    // Desconecte-se do servidor FTP
+    limpar.closeConnection();
+  }
+});
+
+
+routes.get('/clear', async (req, res) => {
+  const repository = new RegisterRepository();
+  const fileDelete = new FileConfig();
+  try {
+    await fileDelete.connectToFTP();
+    // const registers = await repository.listRegister();
+    // res.status(200).send(register);
+    // console.log(registers);
+    // res.status(200).json(registers);
+    await repository.deleteAllRegister();
+    await fileDelete.deleteAll();
+    // console.log('repository passou')
+    // await fileDelete.deleteAll();
+    res.status(200).json('tudo foi eliminado');
+  } catch (e) {
+    res.status(400).send(e);
+  }finally{
+   await fileDelete.closeConnection();
+  }
 })
 
 //=============================================

@@ -1,5 +1,6 @@
 node_modules
 DOCKERFILE
+folder_on_disk
 yarn.lock
 yarn-error.log
 
