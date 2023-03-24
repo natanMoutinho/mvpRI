@@ -5,65 +5,65 @@ document.addEventListener("DOMContentLoaded",async ()=>{
 })
 
 
-async function  loadTable(){
+async function loadTable() {
     const table = document.getElementById('tabelaIndex');
     console.log(table);
-
-    const childTest = document.createElement('tr')
-    console.log(loadInfo('um autor qualquer','data de agr', 'documento de teste'))
-    const list = loadInfo('um autor qualquer','data de agr', 'documento de teste');
-    // childTest.appendChild(loadInfo('um autor qualquer','data de agr', 'documento de teste'))
+  
     
-    // const dados = await fetch('http://localhost:3000/registers').then(
-    //     date => {
-    //         console.log(date.json)
-    //         return date.json;
-    //     }
-    // )
-    // console.log(dados);
-
-    console.log(await searchListRegister());
+    const list = await searchListRegister();
     
-    // console.log(teste)
+    console.log(typeof list)
+    // const dados = list[0];
+    list.forEach(info => {
+        const tr = document.createElement('tr');
+        const {title,authors,publishedAt} = info;
+        const doc = info['document'];
+        console.log(doc)
+        const [tdTit,tdAuth,tdDataC,tdDoc] = loadInfo(title,authors,publishedAt,doc);
+        tr.appendChild(tdTit);
+        tr.appendChild(tdAuth);
+        tr.appendChild(tdDataC);
+        tr.appendChild(tdDoc);
 
-    // console.log(retorno[0])
-
-
-    // list.forEach(element =>  childTest.appendChild(element) )
-    
-
-
-    // for(element in list){
-    //     console.log(element);
-    //     console.log(typeof element)
-    //     childTest.appendChild(element);
-    // }
-    // console.log(childTest)
-    // table.appendChild(childTest);
-}
+        table.appendChild(tr)
+    });
+  }
 
 
 async function searchListRegister(){
-    let list;
-    fetch('http://localhost:3000/registers')
+    return fetch('http://localhost:3000/registers')
         .then(response => response.json())
-        .then(data=>{
-            list = data;
-        });
-    return list;
+        .then(data => {
+            console.log(data);
+            return data;
+        })
+        .catch(error => console.error(error));
 }
 
 
-function loadInfo(authors,dataCriacao,documet){
+function loadInfo(title, authors, dataCriacao, documet) {
+    const tit = document.createElement('td');
+    tit.innerHTML = title;
+
     const auth = document.createElement('td');
     auth.innerHTML = authors;
 
-    const  dataC = document.createElement('td');
-    dataC.innerHTML = dataCriacao
+    const dataC = document.createElement('td');
+    dataC.innerHTML = dataCriacao;
 
-    const documento = document.createElement('td');
-    documento.innerHTML = documet;
+    const documento = createButtonDoc(documet);
 
-    return [auth,dataC,documento]
+    return [tit, auth, dataC, documento];
+}
 
+function createButtonDoc(doc){
+        let botao = document.createElement("button");
+        // Define os atributos do botão
+		botao.innerHTML = "Abrir documento";
+		// botao.id = "meuBotao";
+		// Adiciona um evento de clique ao botão
+		botao.addEventListener("click", function() {
+			window.open(`http://localhost:3000/down/${doc}`, '_blank');
+		});
+        return botao
 }

@@ -22,6 +22,7 @@ services:
       - ./prisma/:/usr/src/mvp_repositorio/prisma/
       - ./.env:/usr/src/mvp_repositorio/.env
       - ./tmp/uploads:/usr/src/mvp_repositorio/tmp/uploads
+      - ./tmp/downloads:/usr/src/mvp_repositorio/tmp/downloads
       # - ./shared/:
       # - ./yarn.lock:/usr/src/toDoList/yarn.lock
       # - ./yarn-error.log:/usr/src/toDoList/yarn-error.log

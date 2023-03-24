@@ -1,8 +1,13 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FileConfig = void 0;
 const basic_ftp_1 = require("basic-ftp");
+const path_1 = __importDefault(require("path"));
 const stream_1 = require("stream");
+const fs_1 = __importDefault(require("fs"));
 class FileConfig {
     constructor() {
         this.ftpClient = new basic_ftp_1.Client(30000);
@@ -32,16 +37,41 @@ class FileConfig {
         await this.ftpClient.uploadFrom(readStream, file.originalname);
     }
     async downloadFileFromFTP(filename) {
-        // console.log('======================================')
-        // console.log(filename)
-        const readStream = new stream_1.PassThrough();
-        // console.log(readStream)
-        await this.ftpClient.downloadTo(readStream, filename);
-        // console.log(readStream)
-        return readStream;
+        // Defina o caminho local para onde o arquivo será baixado
+        const localFilePath = path_1.default.join(__dirname, './../tmp/downloads', filename);
+        // console.log(`${localFilePath}               ${filename}`);
+        //  `/usr/src/mvp_repositorio/tmp/downloads/${filename}`
+        // Baixe o arquivo
+        await this.ftpClient.downloadTo(fs_1.default.createWriteStream(`/usr/src/mvp_repositorio/tmp/downloads/${filename}`), filename);
+        console.log('teste --------------------------------------------------------------------');
     }
     async closeConnection() {
         await this.ftpClient.close();
     }
 }
 exports.FileConfig = FileConfig;
+/*
+async downloadFileFromFTP(filename: string) {
+        // Defina o caminho local para onde o arquivo será baixado
+        const localFilePath = path.join(__dirname, './../tmp/downloads/.');
+        // console.log(`${localFilePath}               ${filename}`);
+
+        // Defina a permissão que você deseja dar ao diretório (em notação octal)
+        const permissao = 0o777;
+
+        // Dê permissão ao diretório
+        fs.chmod('/usr/src/mvp_repositorio/tmp/downloads', permissao, (err) => {
+        if (err) {
+        console.error(err);
+        } else {
+        console.log(`Permissão concedida para ${localFilePath}`);
+        }
+        });
+
+        // Baixe o arquivo
+        await this.ftpClient.downloadTo(fs.createWriteStream('/usr/src/mvp_repositorio/tmp/downloads'), filename);
+        // console.log('ateste');
+    }
+
+
+*/ 

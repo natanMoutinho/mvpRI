@@ -11,6 +11,7 @@ model Register {
   id          Int      @id @default(autoincrement())
   authors     String
   createdAt   DateTime @default(now())
-  publishedAt DateTime
+  publishedAt String
   document    String
+  title       String
 }

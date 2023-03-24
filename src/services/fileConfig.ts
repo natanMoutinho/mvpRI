@@ -1,6 +1,7 @@
 import { Client } from "basic-ftp";
+import path from "path";
 import { PassThrough } from "stream";
-
+import fs from 'fs'
 export class FileConfig{
     private readonly ftpClient: Client;
 
@@ -35,17 +36,45 @@ export class FileConfig{
     }
     
     async downloadFileFromFTP(filename: string) {
-        // console.log('======================================')
-        // console.log(filename)
-        const readStream = new PassThrough();
-        // console.log(readStream)
-        await this.ftpClient.downloadTo(readStream, filename);
-        // console.log(readStream)
-        return readStream;
-    }
+        // Defina o caminho local para onde o arquivo será baixado
+        const localFilePath = path.join(__dirname, './../tmp/downloads',filename);
+        // console.log(`${localFilePath}               ${filename}`);
+        //  `/usr/src/mvp_repositorio/tmp/downloads/${filename}`
+        // Baixe o arquivo
+        await this.ftpClient.downloadTo(fs.createWriteStream(`/usr/src/mvp_repositorio/tmp/downloads/${filename}`), filename);
+        console.log('teste --------------------------------------------------------------------');
     
+    }
+
+
     async closeConnection() {
         await this.ftpClient.close();
     }
     
 }
+
+/*
+async downloadFileFromFTP(filename: string) {
+        // Defina o caminho local para onde o arquivo será baixado
+        const localFilePath = path.join(__dirname, './../tmp/downloads/.');
+        // console.log(`${localFilePath}               ${filename}`);
+
+        // Defina a permissão que você deseja dar ao diretório (em notação octal)
+        const permissao = 0o777;
+
+        // Dê permissão ao diretório
+        fs.chmod('/usr/src/mvp_repositorio/tmp/downloads', permissao, (err) => {
+        if (err) {
+        console.error(err);
+        } else {
+        console.log(`Permissão concedida para ${localFilePath}`);
+        }
+        });
+
+        // Baixe o arquivo
+        await this.ftpClient.downloadTo(fs.createWriteStream('/usr/src/mvp_repositorio/tmp/downloads'), filename);
+        // console.log('ateste');
+    }
+
+
+*/

@@ -10,6 +10,7 @@ class RegisterRepository {
         console.log(info);
         const newRegister = await this.prismaCli.register.create({
             data: {
+                title: info.title,
                 authors: info.authors,
                 // createdAt: data.createdAt,
                 publishedAt: info.publishedAt,
@@ -23,6 +24,8 @@ class RegisterRepository {
     async listRegister() {
         const listRegister = await this.prismaCli.register.findMany({});
         return listRegister;
+    }
+    async deleteRegister() {
     }
 }
 exports.RegisterRepository = RegisterRepository;

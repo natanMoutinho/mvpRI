@@ -1,10 +1,9 @@
 import { Prisma, PrismaClient } from "@prisma/client";
-// import { prismaCli } from "../services/prismaClient";
 
 export interface infoDTO{
+    title:string,
     authors:string,
-    // createdAt: Date
-    publishedAt: Date
+    publishedAt: string
     document: string,
 }
 
@@ -14,12 +13,11 @@ export class RegisterRepository{
     constructor(){
         this.prismaCli = new PrismaClient();
     }
-
-
     async createRegister(info:infoDTO ){
         console.log(info)
         const newRegister = await this.prismaCli.register.create({
             data:{
+                title: info.title,
                 authors: info.authors,
                 // createdAt: data.createdAt,
                 publishedAt:  info.publishedAt,
@@ -34,5 +32,9 @@ export class RegisterRepository{
     async listRegister(){
         const listRegister =  await this.prismaCli.register.findMany({}); 
         return listRegister;
+    }
+
+    async deleteRegister(){
+        
     }
 }
