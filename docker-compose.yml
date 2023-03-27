@@ -70,8 +70,8 @@ services:
       # - "./folder_on_disk/pure-ftpd/pure-ftpd.conf:/etc/pure-ftpd/pure-ftpd.conf"
     environment:
       - PUBLICHOST=localhost
-      - FTP_USER_NAME= ${FTP_USER_NAME}
-      - FTP_USER_PASS= ${FTP_USER_PASS}
+      - FTP_USER_NAME=${FTP_USER_NAME}
+      - FTP_USER_PASS=${FTP_USER_PASS}
       - FTP_USER_HOME=/home/${FTP_USER_HOME}
     # command:
     #   - /bin/sh
