@@ -9,7 +9,6 @@ async function loadTable() {
     const table = document.getElementById('tBody');
     console.log(table);
   
-    
     const list = await searchListRegister();
     
     console.log(typeof list)

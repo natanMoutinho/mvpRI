@@ -42,7 +42,7 @@ sudo apt install docker docker-compose
 
 #### Link de conexão Prisma-postgres
 ~~~
-DATABASE_URL=
+DATABASE_URL= 
 ~~~
 *DATABASE_URL é uma variável de ambiente que armazena a URL de conexão com um banco de dados.
 

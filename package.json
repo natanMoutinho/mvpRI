@@ -12,7 +12,7 @@
     "clear": "docker-compose down -v",
     "db": "docker-compose up",
     "prod": " npm install --omit=dev",
-    "migrate": "yarn prisma migrate dev --name inicio",
+    "prisma_build": "npx prisma migrate deploy && npx prisma generate",
     "ls": "ls"
   },
   "author": "nataN <natan.nt.iff@gmail.com>",

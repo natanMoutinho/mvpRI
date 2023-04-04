@@ -124,9 +124,9 @@ input:hover:focus::-ms-placeholder, textarea:hover::focus:-ms-placeholder {
   color: #cbc6c1;
 }
 
-body {
+.body {
   font-family: 'Lato', sans-serif;
-  background: #e2dedb;
+  background-color: #131418;
   color: #b3aca7;
 }
 
@@ -197,14 +197,14 @@ textarea:hover {
 }
 
 #submit {
-  width: 502px;
+  /* width: 502px; */
   
   padding: 0;
   margin: -5px 0px 0px 0px;
   
   font-family: 'Lato', sans-serif;
   font-size: 0.875em;
-  color: #b3aca7;
+  color: #222222;
   
   outline:none;
   cursor: pointer;
