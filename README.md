@@ -9,10 +9,10 @@ Primeiramente será necessário instalar a ferramenta de container e o orquestra
 ~~~
 sudo apt install docker docker-compose
 ~~~
- ### Variaveis de ambiente
+ ### *Variaveis de ambiente*
  Durante a construção desse mvp, foi para uma melhor configuração e facilidade no compartilhamento desse projeto foi criado uma arquivo *.env*. Onde guardará informações essenciais para a reprodução do projeto. Tais informações serão responsáveis pelas definições relacionadas a senha e nome do banco de dados, senha e login para o servidor ftp e por ultimo o link para do prisma para o banco de dados.
-
-#### Ftp Server
+-
+#### *Ftp Server*
 ~~~
     FTP_PORT= 21
     FTP_USER_NAME=
@@ -27,7 +27,7 @@ sudo apt install docker docker-compose
 
 * FTP_USER_HOME: Especifica o diretório raiz (ou home directory) do usuário no servidor FTP. É onde o usuário será levado após se conectar ao servidor.
 
-#### DB server
+#### *DB server*
  ~~~
     POSTGRES_USER=
     POSTGRES_PW=
@@ -40,11 +40,14 @@ sudo apt install docker docker-compose
 * POSTGRES_DB: Especifica o nome do banco de dados que será usado.
 
 
-#### Link de conexão Prisma-postgres
+#### *Link de conexão Prisma-postgres*
 ~~~
 DATABASE_URL="postgresql://${POSTGRES_USER}:${POSTGRES_PW}@postgress_container:5432/{POSTGRES_DB}?schema=public"
 ~~~
-*DATABASE_URL é uma variável de ambiente que armazena a URL de conexão com um banco de dados.
+* DATABASE_URL é uma variável de ambiente que armazena a URL de conexão com um banco de dados.
+
+
+
 
 
 

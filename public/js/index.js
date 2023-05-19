@@ -1,18 +1,28 @@
 
 
 document.addEventListener("DOMContentLoaded",async ()=>{
-    await loadTable()
 })
-
+document.getElementById("btnListarRegistros").addEventListener("click",async ()=>{
+    // clearTable();
+    await loadTable();
+});
+// document.addEventListener("btnListarRegistros",async ()=>{
+//     await loadTable()
+// })
 
 async function loadTable() {
     const table = document.getElementById('tBody');
     console.log(table);
-  
-    const list = await searchListRegister();
     
-    console.log(typeof list)
-    // const dados = list[0];
+    if (table.childElementCount > 0) {
+        
+        const child = table.firstElementChild;
+        table.removeChild(child);
+    }
+    const list = await searchListRegister();
+
+
+    console.log( list)
     let cont = 1;
     list.forEach(info => {
         const tr = document.createElement('tr');
@@ -32,7 +42,6 @@ async function loadTable() {
         table.appendChild(tr)
     });
   }
-
 
 async function searchListRegister(){
     return fetch('http://localhost:3000/registers')

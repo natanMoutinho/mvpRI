@@ -47,7 +47,7 @@ routes.post("/upload", upload.single("file"), async (req, res) => {
         await fileUploader.connectToFTP();
         if (req.file) {
             await fileUploader.uploadFileToFTP(req.file);
-            const newRegister = await repository.createRegister({ title, authors, publishedAt, document: req.file.originalname });
+            await repository.createRegister({ title, authors, publishedAt, document: req.file.originalname });
             await fileUploader.closeConnection();
             res.status(200).redirect('/');
             // res.redirect('/');
@@ -72,11 +72,8 @@ routes.get("/down/:filename", async (req, res) => {
     const fileDownloader = new fileConfig_1.FileConfig();
     try {
         await fileDownloader.connectToFTP();
-        // console.log('============================================')
         await fileDownloader.downloadFileFromFTP(remoteFileName);
-        // console.log('============================================')
-        console.log(localFilePath);
-        // await fileDownloader.clear()
+        // console.log(localFilePath)
         res.sendFile(localFilePath, (err) => {
             if (err) {
                 console.error(`Erro ao enviar o arquivo ${remoteFileName} como resposta HTTP:`, err);
@@ -117,33 +114,13 @@ routes.get('/registers', async (req, res) => {
         res.status(400).send(e);
     }
 });
-routes.get("/limpar", async (req, res) => {
-    const limpar = new fileConfig_1.FileConfig();
-    try {
-        console.log(await limpar.clear());
-    }
-    catch (err) {
-        console.error(err);
-        res.status(400).send("Não deu pra limpar");
-    }
-    finally {
-        // Desconecte-se do servidor FTP
-        limpar.closeConnection();
-    }
-});
 routes.get('/clear', async (req, res) => {
     const repository = new RegisterRepository_1.RegisterRepository();
     const fileDelete = new fileConfig_1.FileConfig();
     try {
         await fileDelete.connectToFTP();
-        // const registers = await repository.listRegister();
-        // res.status(200).send(register);
-        // console.log(registers);
-        // res.status(200).json(registers);
         await repository.deleteAllRegister();
         await fileDelete.deleteAll();
-        // console.log('repository passou')
-        // await fileDelete.deleteAll();
         res.status(200).json('tudo foi eliminado');
     }
     catch (e) {
@@ -157,11 +134,10 @@ routes.get('/clear', async (req, res) => {
 routes.get('/tccForm', (req, res) => {
     res.sendFile(path_1.default.join(__dirname, '/../public/form.html'));
 });
+routes.get('/indexStyle', (req, res) => {
+    res.sendFile(path_1.default.join(__dirname, '/../public/form.html'));
+});
 routes.get('/img/mural', (req, res) => {
     res.sendFile(path_1.default.join(__dirname, '/../public/img/mural1.jpg'));
 });
-// express.static(__dirname + '/../public/css')
-// routes.get('/css/',(req,res)=>{
-//     res.sendFile(path.join(__dirname, '/../public/css'));
-// })
 exports.default = routes;
