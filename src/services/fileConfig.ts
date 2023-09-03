@@ -1,5 +1,4 @@
 import { Client } from "basic-ftp";
-import path from "path";
 import { PassThrough } from "stream";
 import fs from 'fs'
 export class FileConfig{
@@ -7,11 +6,6 @@ export class FileConfig{
 
     constructor (){
         this.ftpClient = new Client(30000);
-        // definindo o timeout como 10 minutos (em milissegundos)
-        // this.ftpClient
-        // this.ftpClient.setTimeout(10 * 60 * 1000);
-        // this.ftpClient.ftp.connTimeout = 300000; // tempo limite de conexão em milissegundos
-        // this.ftpClient.ftp.connTimeout = 300000; // tempo limite de conexão em milissegundos
     }
 
     async connectToFTP() {
@@ -25,8 +19,6 @@ export class FileConfig{
           user,
           password,
         });
-        // await this.ftpClient.send("SITE TIMEOUT 50000"); 
-        // console.log('Connectado e tudo mais')
     }
 
     async uploadFileToFTP(file: Express.Multer.File) {
@@ -36,16 +28,8 @@ export class FileConfig{
     }
     
     async downloadFileFromFTP(filename: string) {
-        // Defina o caminho local para onde o arquivo será baixado
-        const localFilePath = path.join(__dirname, './../tmp/downloads',filename);
-        // console.log(`${localFilePath}               ${filename}`);
-        //  `/usr/src/mvp_repositorio/tmp/downloads/${filename}`
         // Baixe o arquivo
         await this.ftpClient.downloadTo(fs.createWriteStream(`/usr/src/mvp_repositorio/tmp/downloads/${filename}`), filename);
-
-        // const list = await this.ftpClient.list();
-        // console.log(list);
-    
     }
 
     async clear(){

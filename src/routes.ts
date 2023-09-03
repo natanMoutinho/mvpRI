@@ -22,10 +22,9 @@ routes.post("/upload", upload.single("file"), async (req, res) => {
     await fileUploader.connectToFTP();
     if (req.file) {
       await fileUploader.uploadFileToFTP(req.file);
-      await repository.createRegister({title, authors, publishedAt, document: req.file.originalname });
+      await repository.createRegister({title, authors, publishedAt, document: req.file.originalname});
       await fileUploader.closeConnection();
       res.status(200).redirect('/');
-      // res.redirect('/');
     }
   } catch (err) {
     console.error(err);
@@ -72,11 +71,9 @@ routes.get("/down/:filename", async (req, res) => {
 });
 
 routes.get('/registers', async (req, res) => {
-  // const {authors,publishedAt,document} = req.body;
   const repository = new RegisterRepository();
   try {
     const registers = await repository.listRegister();
-    // res.status(200).send(register);
     await repository
     console.log(registers);
     

@@ -19,6 +19,9 @@ async function loadTable() {
         const child = table.firstElementChild;
         table.removeChild(child);
     }
+    while (table.firstChild){
+        table.removeChild(table.firstChild)
+    }
     const list = await searchListRegister();
 
 

@@ -16,7 +16,7 @@
     gap: 10px;
     justify-items: center;
     align-items: center;
-    height: 100vh;
+    height: 30vh;
 }
 .modal.fade .modal-bottom,
 .modal.fade .modal-left,
@@ -113,6 +113,27 @@
     border-radius: 0.3rem;
     outline: 0;
 }
+
+
+/* Barra de pesquisa */
+
+.search-form {
+    display: flex;
+  }
+
+  .search-input {
+    flex: 1;
+    border: none;
+    background-color: #343a40;
+    color: #fff;
+  }
+
+  .search-button {
+    background-color: #6c757d;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+  }
 
 
 

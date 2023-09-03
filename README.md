@@ -47,6 +47,11 @@ DATABASE_URL="postgresql://${POSTGRES_USER}:${POSTGRES_PW}@postgress_container:5
 * DATABASE_URL é uma variável de ambiente que armazena a URL de conexão com um banco de dados.
 
 
+### Executar tudo
+Após configurar tudo certinho, só precisa executar o comando do docker-compose.
+~~~
+    docker-compose up
+~~~
 
 
 
